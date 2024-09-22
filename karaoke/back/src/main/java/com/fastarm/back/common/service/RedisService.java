@@ -1,5 +1,6 @@
 package com.fastarm.back.common.service;
 
+import com.fastarm.back.karaoke.controller.dto.GetReservationsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -13,23 +14,21 @@ public class RedisService {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public void setData(String key, Object value, int expiredTime) {
-        redisTemplate.opsForValue().set(key, value, expiredTime, TimeUnit.MINUTES);
+    public void setData(String key, String field, Object value) {
+        redisTemplate.opsForHash().put(key, field, value);
     }
 
-    public void setData(String key, Object value) {
-        redisTemplate.opsForValue().set(key, value);
+    public void setData(String key, String field, Object value, int expired) {
+        redisTemplate.opsForHash().put(key, field, value);
+        redisTemplate.expire(key, expired, TimeUnit.MINUTES);
     }
 
-    public List<Object> getReservations(String key) {
-        return redisTemplate.opsForList().range(key, 0, -1);
-    }
-
-    public Object getData(String key) {
-        return redisTemplate.opsForValue().get(key);
+    public List<Object> getReservations(String key, String field) {
+        return (List<Object>) redisTemplate.opsForHash().get(key, field);
     }
 
     public void deleteData(String key) {
         redisTemplate.delete(key);
     }
+
 }
