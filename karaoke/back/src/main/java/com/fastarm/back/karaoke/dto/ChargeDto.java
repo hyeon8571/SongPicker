@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 public class ChargeDto {
     private String serialNumber;
     private String type;
-    private int charge;
+    private int remaining;
 }
