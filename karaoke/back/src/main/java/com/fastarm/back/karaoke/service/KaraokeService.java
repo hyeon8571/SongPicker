@@ -4,6 +4,8 @@ import com.fastarm.back.common.constants.RedisConstants;
 import com.fastarm.back.common.service.RedisService;
 import com.fastarm.back.karaoke.dto.ChargeDto;
 import com.fastarm.back.karaoke.enums.ChargeType;
+import com.fastarm.back.karaoke.exception.NotFoundMachineException;
+import com.fastarm.back.karaoke.repository.MachineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +15,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class KaraokeService {
 
+    private final MachineRepository machineRepository;
     private final RedisService redisService;
 
     public void charge(ChargeDto chargeDto) {
 
-        if (chargeDto.getType().equals(ChargeType.TIME.getValue())) {
-            redisService.setData( RedisConstants.CHARGE_INFO + chargeDto.getSerialNumber(), chargeDto, chargeDto.getRemaining());
+        if (machineRepository.findBySerialNumber(chargeDto.getSerialNumber()).isEmpty()) {
+            throw new NotFoundMachineException();
+        }
+
+        String key = RedisConstants.CHARGE_INFO + chargeDto.getSerialNumber();
+
+        ChargeDto remainDto = (ChargeDto) redisService.getData(key);
+
+        if (remainDto != null && remainDto.getRemaining() > 0) {
+            remainDto.setRemaining(remainDto.getRemaining() + chargeDto.getRemaining());
+            redisService.setData(key, remainDto);
         } else {
-            redisService.setData(RedisConstants.CHARGE_INFO + chargeDto.getSerialNumber(), chargeDto);
+            redisService.setData(key, chargeDto);
         }
     }
 

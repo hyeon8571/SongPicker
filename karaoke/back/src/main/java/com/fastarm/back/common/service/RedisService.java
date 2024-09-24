@@ -21,6 +21,10 @@ public class RedisService {
         redisTemplate.opsForValue().set(key, value);
     }
 
+    public Object getData(String key) {
+        return redisTemplate.opsForValue().get(key);
+    }
+
     public List<Object> getList(String key) {
         return redisTemplate.opsForList().range(key, 0, -1);
     }
