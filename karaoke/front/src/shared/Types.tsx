@@ -10,11 +10,3 @@ export type PayingInfo = {
     amountText: string;
     moneyText: string;
   };
-
-export type ChartItemProps = {
-    song: {
-      songNumber: number;
-      title: string;
-      artist: string;
-    };
-  };
