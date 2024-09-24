@@ -4,6 +4,8 @@ import ChartItem from '../molecules/ChartItem';
 import CarouselLeft from '../assets/CarouselLeft.svg';
 import CarouselRight from '../assets/CarouselRight.svg';
 import Text36 from '../atoms/Text36';
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 
 type ChartCarouselProps = {
   data: {
@@ -29,6 +31,7 @@ type ChartCarouselItemProps = {
   };
   id: number;
   total: number;
+  handleClickedSong: (title: string, artist: string) => void;
 };
 
 const ChartCarouselItem = (props: ChartCarouselItemProps) => {
@@ -64,7 +67,13 @@ const ChartCarouselItem = (props: ChartCarouselItemProps) => {
         {/* 차트 */}
         <div className="h-screen grid grid-cols-1 bg-black/60 gap-y-1 overflow-auto">
           {props.data.songs.map(item => {
-            return <ChartItem song={item} key={item.songNumber} />;
+            return (
+              <ChartItem
+                song={item}
+                handleClickedSong={props.handleClickedSong}
+                key={item.songNumber}
+              />
+            );
           })}
         </div>
       </div>
@@ -73,6 +82,41 @@ const ChartCarouselItem = (props: ChartCarouselItemProps) => {
 };
 
 const ChartCarousel = (props: ChartCarouselProps) => {
+  const [clickedTitle, setClickedTitle] = useState('');
+  const [clickedArtist, setClickedArtist] = useState('');
+
+  // 유튜브 검색
+  const findYoutube = (title: string, artist: string) => {
+    axios({
+      method: 'GET',
+      url: 'https://www.googleapis.com/youtube/v3/search',
+      params: {
+        key: import.meta.env.VITE_YOUTUBE_API_KEY,
+        q: `${title} ${artist}금영 노래방`,
+        maxResults: 1,
+      },
+    })
+      .then(res => {
+        //   navigate('/video', {state: res.data.items[0]})
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  // 클릭한 노래 상태 변경
+  const handleClickedSong = useCallback((title: string, artist: string) => {
+    setClickedTitle(title);
+    setClickedArtist(artist);
+  }, []);
+
+  useEffect(() => {
+    if (clickedTitle && clickedArtist) {
+      findYoutube(clickedTitle, clickedArtist);
+    }
+  }, [clickedTitle, clickedArtist]);
+
   return (
     <div className="carousel w-full h-full">
       {props.data.nicknames.map((item, i) => {
@@ -82,6 +126,7 @@ const ChartCarousel = (props: ChartCarouselProps) => {
             id={i}
             total={props.data.nicknames.length}
             key={`chartcarousel-${i}`}
+            handleClickedSong={handleClickedSong}
           />
         );
       })}

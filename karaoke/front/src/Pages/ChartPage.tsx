@@ -4,6 +4,7 @@ import ChartData from '../shared/ChartData';
 import LandingCharacter from '../assets/LandingCharacter.svg';
 
 const ChartPage = () => {
+
   return (
     <div className="w-full relative mt-28 mb-1">
       <div className='absolute z-10 w-44 top-[-100px] left-10 -rotate-12'>
