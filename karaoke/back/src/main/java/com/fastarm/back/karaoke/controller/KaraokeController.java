@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController()
-@RequestMapping("/karaoke")
+@RestController
 @RequiredArgsConstructor
 public class KaraokeController {
 
@@ -27,4 +26,11 @@ public class KaraokeController {
         List<Object> result = karaokeService.findReservations(serialNumber);
         return ResponseEntity.ok(new ApiResponse<>("KA101", "예약 리스트 조회 성공", result));
     }
+
+    @GetMapping("/recommendations")
+    public ResponseEntity<?> recommendationList(@RequestParam("serialNumber") String serialNumber) {
+
+        return ResponseEntity.ok(new ApiResponse<>("KA102", "추천 차트 조회 성공", null));
+    }
+
 }

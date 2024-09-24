@@ -18,14 +18,18 @@ public class KaraokeService {
     public void charge(ChargeDto chargeDto) {
 
         if (chargeDto.getType().equals(ChargeType.TIME.getValue())) {
-            redisService.setData(RedisConstants.INFO + chargeDto.getSerialNumber(), RedisConstants.CHARGE_INFO, chargeDto, chargeDto.getRemaining());
+            redisService.setData( RedisConstants.CHARGE_INFO + chargeDto.getSerialNumber(), chargeDto, chargeDto.getRemaining());
         } else {
-            redisService.setData(RedisConstants.INFO + chargeDto.getSerialNumber(), RedisConstants.CHARGE_INFO, chargeDto);
+            redisService.setData(RedisConstants.CHARGE_INFO + chargeDto.getSerialNumber(), chargeDto);
         }
     }
 
     public List<Object> findReservations(String serialNumber) {
-        return redisService.getReservations(serialNumber, RedisConstants.RESERVATION_INFO);
+        return redisService.getList(RedisConstants.RESERVATION_INFO + serialNumber);
+    }
+
+    public void findRecommendations(String serialNumber) {
+
     }
 
 }
