@@ -6,6 +6,7 @@ import CarouselRight from '../assets/CarouselRight.svg';
 import Text36 from '../atoms/Text36';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type ChartCarouselProps = {
   data: {
@@ -82,6 +83,8 @@ const ChartCarouselItem = (props: ChartCarouselItemProps) => {
 };
 
 const ChartCarousel = (props: ChartCarouselProps) => {
+  const navigate = useNavigate()
+
   const [clickedTitle, setClickedTitle] = useState('');
   const [clickedArtist, setClickedArtist] = useState('');
 
@@ -92,13 +95,14 @@ const ChartCarousel = (props: ChartCarouselProps) => {
       url: 'https://www.googleapis.com/youtube/v3/search',
       params: {
         key: import.meta.env.VITE_YOUTUBE_API_KEY,
-        q: `${title} ${artist}금영 노래방`,
+        q: `${title} ${artist} Ky Karaoke`,
         maxResults: 1,
+        publishedBefore:"2024-09-24T00:00:00Z",
+        publishedAfter:"2021-01-01T00:00:00Z"
       },
     })
       .then(res => {
-        //   navigate('/video', {state: res.data.items[0]})
-        console.log(res);
+        navigate('/karaoke/video', {state: res.data.items[0]})
       })
       .catch(err => {
         console.log(err);
@@ -111,6 +115,7 @@ const ChartCarousel = (props: ChartCarouselProps) => {
     setClickedArtist(artist);
   }, []);
 
+  // 클릭한 노래가 변경되면 유튜브 검색을 실행
   useEffect(() => {
     if (clickedTitle && clickedArtist) {
       findYoutube(clickedTitle, clickedArtist);
