@@ -1,10 +1,10 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import PayingPage from './pages/PayingPage';
-import MainPage from './pages/MainPage';
-import ChartPage from './pages/ChartPage';
-import KaraokeVideoPage from './pages/KaraokeVideoPage';
+import LandingPage from './fixgit/LandingPage';
+import PayingPage from './fixgit/PayingPage';
+import MainPage from './fixgit/MainPage';
+import ChartPage from './fixgit/ChartPage';
+import KaraokeVideoPage from './fixgit/KaraokeVideoPage';
 
 const router = createBrowserRouter([
   {
