@@ -13,8 +13,8 @@ public class RedisService {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public void setData(String key, Object value, int expiredTime) {
-        redisTemplate.opsForValue().set(key, value, expiredTime, TimeUnit.MINUTES);
+    public void setData(String key, Object value, Long expiredTime) {
+        redisTemplate.opsForValue().set(key, value, expiredTime, TimeUnit.MILLISECONDS);
     }
 
     public void setData(String key, Object value) {
