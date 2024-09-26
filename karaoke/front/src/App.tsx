@@ -8,23 +8,23 @@ import KaraokeVideoPage from './pages/KaraokeVideoPage';
 
 const router = createBrowserRouter([
   {
-    path: '/karaoke',
+    path: '/',
     element: <LandingPage />,
   },
   {
-    path: '/karaoke/paying',
+    path: '/paying',
     element: <PayingPage />,
   },
   {
-    path: '/karaoke/main',
+    path: '/karaoke',
     element: <MainPage />,
   },
   {
-    path: '/karaoke/chart',
+    path: '/chart',
     element: <ChartPage />,
   },
   {
-    path: '/karaoke/video',
+    path: '/video',
     element: <KaraokeVideoPage />,
   },
 ]);
