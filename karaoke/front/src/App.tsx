@@ -6,28 +6,33 @@ import MainPage from './pages/MainPage';
 import ChartPage from './pages/ChartPage';
 import KaraokeVideoPage from './pages/KaraokeVideoPage';
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <LandingPage />,
+    },
+    {
+      path: '/paying',
+      element: <PayingPage />,
+    },
+    {
+      path: '/karaoke',
+      element: <MainPage />,
+    },
+    {
+      path: '/chart',
+      element: <ChartPage />,
+    },
+    {
+      path: '/video',
+      element: <KaraokeVideoPage />,
+    },
+  ],
   {
-    path: '/',
-    element: <LandingPage />,
-  },
-  {
-    path: '/paying',
-    element: <PayingPage />,
-  },
-  {
-    path: '/karaoke',
-    element: <MainPage />,
-  },
-  {
-    path: '/chart',
-    element: <ChartPage />,
-  },
-  {
-    path: '/video',
-    element: <KaraokeVideoPage />,
-  },
-]);
+    basename: '/karaoke',
+  }
+);
 
 function App() {
   return <RouterProvider router={router} />;
