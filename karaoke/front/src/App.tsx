@@ -17,7 +17,7 @@ const router = createBrowserRouter(
       element: <PayingPage />,
     },
     {
-      path: '/karaoke',
+      path: '/main',
       element: <MainPage />,
     },
     {
