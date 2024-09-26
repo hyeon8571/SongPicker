@@ -106,7 +106,7 @@ const ChartCarousel = (props: ChartCarouselProps) => {
       },
     })
       .then(res => {
-        navigate('/karaoke/video', { state: res.data.items[0] });
+        navigate('/video', { state: res.data.items[0] });
       })
       .catch(err => {
         console.log(err);
