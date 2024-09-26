@@ -1,5 +1,3 @@
-// type Props = {}
-
 import ChartItem from '../molecules/ChartItem';
 import CarouselLeft from '../assets/CarouselLeft.svg';
 import CarouselRight from '../assets/CarouselRight.svg';
