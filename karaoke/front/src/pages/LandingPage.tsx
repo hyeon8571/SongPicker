@@ -8,7 +8,7 @@ const LandingPage = () => {
 
   // 시작하기 버튼 클릭 시 이동
   const startKaraoke = () => {
-    navigate('/karaoke/paying')
+    navigate('/paying')
   }
 
   return (
