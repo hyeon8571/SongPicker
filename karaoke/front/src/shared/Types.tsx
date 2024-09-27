@@ -10,3 +10,9 @@ export type PayingInfo = {
     amountText: string;
     moneyText: string;
   };
+
+//버튼
+export type ButtonProps = {
+    text: string;
+    handleClick: () => void;
+  };
