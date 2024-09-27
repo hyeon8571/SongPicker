@@ -19,7 +19,7 @@ const AskPayModal = (props: AskPayModalProps) => {
 
           {/* 결제 금액 안내 */}
           <div className="flex justify-center gap-x-5 font-medium">
-            <Text48 text={props.selectedPay.amountText} />
+            <Text48 text={`${props.selectedPay.amount}곡`} />
             <Text48 text={props.selectedPay.moneyText} />
           </div>
 

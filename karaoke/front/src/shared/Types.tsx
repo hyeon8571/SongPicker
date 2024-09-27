@@ -5,9 +5,7 @@ export type TextProps = {
 
 // 결제 페이지 카테고리 데이터에 사용
 export type PayingInfo = {
-    categoryColor: string;
-    categoryText: string;
-    amountText: string;
+    amount: number;
     moneyText: string;
   };
 
