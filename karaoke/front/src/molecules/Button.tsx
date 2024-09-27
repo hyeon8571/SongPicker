@@ -1,9 +1,5 @@
 import Text48 from '../atoms/Text48';
-
-type ButtonProps = {
-  text: string;
-  handleClick: () => void;
-};
+import { ButtonProps } from '../shared/Types';
 
 const Button = (props: ButtonProps) => {
   return (
