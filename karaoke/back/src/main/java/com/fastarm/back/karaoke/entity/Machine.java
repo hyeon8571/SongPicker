@@ -1,8 +1,17 @@
 package com.fastarm.back.karaoke.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Machine {
 
     @Id
@@ -11,4 +20,13 @@ public class Machine {
 
     @Column(nullable = false, unique = true, length = 16)
     private String serialNumber;
+
+    private int remaining;
+
+    @Column(nullable = false)
+    private LocalDateTime usedAt;
+
+    public void chargeCoin(int coin) {
+        remaining += coin;
+    }
 }

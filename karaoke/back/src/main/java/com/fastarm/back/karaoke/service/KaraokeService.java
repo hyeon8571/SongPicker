@@ -1,13 +1,14 @@
 package com.fastarm.back.karaoke.service;
 
 import com.fastarm.back.common.constants.RedisConstants;
-import com.fastarm.back.common.constants.RedisExpiredTimeConstants;
 import com.fastarm.back.common.service.RedisService;
 import com.fastarm.back.karaoke.dto.ChargeDto;
+import com.fastarm.back.karaoke.entity.Machine;
 import com.fastarm.back.karaoke.exception.NotFoundMachineException;
 import com.fastarm.back.karaoke.repository.MachineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,22 +19,13 @@ public class KaraokeService {
     private final MachineRepository machineRepository;
     private final RedisService redisService;
 
+    @Transactional
     public void charge(ChargeDto chargeDto) {
 
-        if (machineRepository.findBySerialNumber(chargeDto.getSerialNumber()).isEmpty()) {
-            throw new NotFoundMachineException();
-        }
+        Machine machine = machineRepository.findBySerialNumber(chargeDto.getSerialNumber())
+                .orElseThrow(NotFoundMachineException::new);
 
-        String key = RedisConstants.CHARGE_INFO + chargeDto.getSerialNumber();
-
-        ChargeDto remainDto = (ChargeDto) redisService.getData(key);
-
-        if (remainDto != null && remainDto.getRemaining() > 0) {
-            remainDto.setRemaining(remainDto.getRemaining() + chargeDto.getRemaining());
-            redisService.setData(key, remainDto, RedisExpiredTimeConstants.CONNECTION_EXPIRED);
-        } else {
-            redisService.setData(key, chargeDto, RedisExpiredTimeConstants.CONNECTION_EXPIRED);
-        }
+        machine.chargeCoin(chargeDto.getRemaining());
     }
 
     public List<Object> findReservations(String serialNumber) {
