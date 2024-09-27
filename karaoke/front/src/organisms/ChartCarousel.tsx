@@ -31,6 +31,7 @@ type ChartCarouselItemProps = {
   id: number;
   total: number;
   handleClickedSong: (title: string, artist: string) => void;
+  handleCurrentChart: (i: number) => void;
 };
 
 const ChartCarouselItem = (props: ChartCarouselItemProps) => {
@@ -40,13 +41,15 @@ const ChartCarouselItem = (props: ChartCarouselItemProps) => {
         {/* 차트 닉네임 */}
         <div className="flex w-[610px] h-20 bg-gradient-to-r from-[#565ed2] via-[#47c490] to-[#565ed2] justify-center items-center text-white tracking-wide last:*:drop-shadow-md">
           {/* 왼쪽 화살표 */}
-          <a
-            href={props.id - 1 < 0 ? `#chart-${props.total - 1}` : `#chart-${props.id - 1}`}
+          <div
             className="btn bg-transparent border-none hover:bg-transparent hover:scale-125"
+            onClick={() => {
+              props.handleCurrentChart(props.id - 1 < 0 ? props.total - 1 : props.id - 1);
+            }}
             style={props.total === 1 ? { display: 'none' } : {}}
           >
             <img src={CarouselLeft} />
-          </a>
+          </div>
 
           {/* 닉네임 */}
           <div className="w-96 px-6 text-center font-semibold">
@@ -54,13 +57,15 @@ const ChartCarouselItem = (props: ChartCarouselItemProps) => {
           </div>
 
           {/* 오른쪽 화살표 */}
-          <a
-            href={props.id + 1 > props.total - 1 ? '#chart-0' : `#chart-${props.id + 1}`}
+          <div
             className="btn bg-transparent border-none hover:bg-transparent hover:scale-125"
+            onClick={() => {
+              props.handleCurrentChart(props.id + 1 > props.total - 1 ? 0 : props.id + 1);
+            }}
             style={props.total === 1 ? { display: 'none' } : {}}
           >
             <img src={CarouselRight} />
-          </a>
+          </div>
         </div>
 
         {/* 차트 */}
@@ -81,10 +86,11 @@ const ChartCarouselItem = (props: ChartCarouselItemProps) => {
 };
 
 const ChartCarousel = (props: ChartCarouselProps) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [clickedTitle, setClickedTitle] = useState('');
   const [clickedArtist, setClickedArtist] = useState('');
+  const [currentChart, setCurrentChart] = useState(0);
 
   // 유튜브 검색
   const findYoutube = (title: string, artist: string) => {
@@ -95,12 +101,14 @@ const ChartCarousel = (props: ChartCarouselProps) => {
         key: import.meta.env.VITE_YOUTUBE_API_KEY,
         q: `${title} ${artist} Ky Karaoke`,
         maxResults: 1,
-        publishedBefore:"2024-09-24T00:00:00Z",
-        publishedAfter:"2021-01-01T00:00:00Z"
+        publishedBefore: '2024-09-24T00:00:00Z',
+        publishedAfter: '2021-01-01T00:00:00Z',
       },
     })
       .then(res => {
-        navigate('/video', {state: res.data.items[0]})
+
+        navigate('/video', { state: res.data.items[0] });
+
       })
       .catch(err => {
         console.log(err);
@@ -113,6 +121,10 @@ const ChartCarousel = (props: ChartCarouselProps) => {
     setClickedArtist(artist);
   }, []);
 
+  const handleCurrentChart = (i:number) => {
+    setCurrentChart(i);
+  };
+
   // 클릭한 노래가 변경되면 유튜브 검색을 실행
   useEffect(() => {
     if (clickedTitle && clickedArtist) {
@@ -124,13 +136,16 @@ const ChartCarousel = (props: ChartCarouselProps) => {
     <div className="carousel w-full h-full">
       {props.data.nicknames.map((item, i) => {
         return (
-          <ChartCarouselItem
-            data={item}
-            id={i}
-            total={props.data.nicknames.length}
-            key={`chartcarousel-${i}`}
-            handleClickedSong={handleClickedSong}
-          />
+          currentChart === i && (
+            <ChartCarouselItem
+              data={item}
+              id={i}
+              total={props.data.nicknames.length}
+              key={`chartcarousel-${i}`}
+              handleClickedSong={handleClickedSong}
+              handleCurrentChart={handleCurrentChart}
+            />
+          )
         );
       })}
     </div>
