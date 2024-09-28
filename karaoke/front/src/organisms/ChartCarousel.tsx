@@ -69,7 +69,7 @@ const ChartCarouselItem = (props: ChartCarouselItemProps) => {
         </div>
 
         {/* 차트 */}
-        <div className="h-screen grid grid-cols-1 bg-black/60 gap-y-1 overflow-auto">
+        <div className="h-full grid grid-cols-1 gap-y-1 overflow-auto">
           {props.data.songs.map(item => {
             return (
               <ChartItem
