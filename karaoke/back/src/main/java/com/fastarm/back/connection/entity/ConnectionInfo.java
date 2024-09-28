@@ -1,8 +1,10 @@
 package com.fastarm.back.connection.entity;
 
+import com.fastarm.back.connection.enums.Mode;
 import com.fastarm.back.connection.enums.Status;
 import com.fastarm.back.karaoke.entity.Machine;
 import com.fastarm.back.member.entity.Member;
+import com.fastarm.back.team.entity.Team;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -31,7 +33,15 @@ public class ConnectionInfo {
     @JoinColumn(name = "machine_id")
     private Machine machine;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Mode mode;
 }
