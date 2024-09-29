@@ -3,12 +3,9 @@ import ChartCarousel from '../organisms/ChartCarousel';
 import ChartData from '../shared/ChartData';
 import LandingCharacter from '../assets/LandingCharacter.svg';
 import Text36 from '../atoms/Text36';
+import { ChartTemplateProps } from '../shared/Types';
 
-type ChartTemplatesProps = {
-  closeChart: () => void;
-};
-
-const ChartTemplates = (props: ChartTemplatesProps) => {
+const ChartTemplate = (props: ChartTemplateProps) => {
   return (
     <div className="relative w-full flex justify-center items-end">
       {/* 차트 */}
@@ -39,4 +36,4 @@ const ChartTemplates = (props: ChartTemplatesProps) => {
   );
 };
 
-export default ChartTemplates;
+export default ChartTemplate;
