@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import Text72 from '../atoms/Text72';
 import PayingButton from '../molecules/PayingButton';
-import { PayingCategory } from './PayingData';
+import { PayingCategory } from '../shared/PayingCategory';
 import AskPayModal from '../organisms/AskPayModal';
 import { PayingInfo } from '../shared/Types';
 import ProgressPayModal from '../organisms/ProgressPayModal';
 import FinishPayModal from '../organisms/FinishPayModal';
+import axiosInstance from '../services/axiosInstance';
 
 const PayingPage = () => {
   const [askPay, setAskPay] = useState(false);
@@ -29,18 +30,32 @@ const PayingPage = () => {
   const handleProgressPayModal = () => {
     setProgressPay(true);
     setAskPay(false);
+    axiosInstance({
+      method: 'POST',
+      url: '/charge',
+      data: {
+        coin: selectedPay?.amount,
+        serialNumber: 'D208-SongPicker',
+      },
+    })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
     setSelectedPay(null);
   };
 
   // FinishPayModal 열기
   const handleFinishPayModal = () => {
-    setFinishPay(true)
-    setProgressPay(false)
-  }
+    setFinishPay(true);
+    setProgressPay(false);
+  };
 
   const closeFinishPayModal = () => {
-    setFinishPay(false)
-  }
+    setFinishPay(false);
+  };
 
   return (
     <div className="flex flex-col gap-y-28 w-full h-full justify-center items-center">
@@ -55,9 +70,7 @@ const PayingPage = () => {
           return (
             <div key={`PayCategory-${i}`}>
               <PayingButton
-                categoryColor={item.categoryColor}
-                categoryText={item.categoryText}
-                amountText={item.amountText}
+                amount={item.amount}
                 moneyText={item.moneyText}
                 onClick={() => handleAskPayModal(item)}
               />
@@ -76,15 +89,12 @@ const PayingPage = () => {
           handleProgressPayModal={handleProgressPayModal}
         />
       )}
-      
+
       {/* progressPay 모달 */}
       {progressPay && <ProgressPayModal handleFinishPayModal={handleFinishPayModal} />}
 
       {/* finishPay 모달 */}
-      {
-        finishPay && <FinishPayModal closeFinishPayModal={closeFinishPayModal}/>
-      }
-
+      {finishPay && <FinishPayModal closeFinishPayModal={closeFinishPayModal} />}
     </div>
   );
 };

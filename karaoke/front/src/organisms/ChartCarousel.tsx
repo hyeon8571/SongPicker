@@ -106,9 +106,7 @@ const ChartCarousel = (props: ChartCarouselProps) => {
       },
     })
       .then(res => {
-
         navigate('/video', { state: res.data.items[0] });
-
       })
       .catch(err => {
         console.log(err);
@@ -121,7 +119,7 @@ const ChartCarousel = (props: ChartCarouselProps) => {
     setClickedArtist(artist);
   }, []);
 
-  const handleCurrentChart = (i:number) => {
+  const handleCurrentChart = (i: number) => {
     setCurrentChart(i);
   };
 
