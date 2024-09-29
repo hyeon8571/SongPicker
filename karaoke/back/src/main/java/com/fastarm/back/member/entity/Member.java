@@ -14,11 +14,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE member SET is_withdraw = true WHERE id = ?")
 @SQLRestriction("is_withdraw != true")
-@Builder
 @Getter
 public class Member {
 

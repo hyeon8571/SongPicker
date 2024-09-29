@@ -7,7 +7,6 @@ import com.fastarm.back.member.entity.Member;
 import com.fastarm.back.team.entity.Team;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -15,10 +14,9 @@ import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
-@SQLDelete(sql = "UPDATE connection_info SET status = 'DISCONNECT' id = ?")
+@SQLDelete(sql = "UPDATE connection_info SET status = 'DISCONNECT' where id = ?")
 @SQLRestriction("status != 'DISCONNECT'")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class ConnectionInfo {
 
     @Id
@@ -44,4 +42,9 @@ public class ConnectionInfo {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Mode mode;
+
+    @PrePersist
+    protected void onCreate() {
+        status = Status.CONNECT;
+    }
 }
