@@ -2,7 +2,7 @@ import { useState } from 'react';
 import MainBackground from '../assets/MainBackground.png';
 import CircleButton from '../molecules/CircleButton';
 import GuideQrcode from '../organisms/GuideQrcode';
-import ChartTemplates from '../templates/ChartTemplates';
+import ChartTemplates from '../templates/ChartTemplate';
 
 const MainPage = () => {
   const [showRecommendation, setShowRecommendation] = useState(false);
@@ -28,8 +28,8 @@ const MainPage = () => {
       {(showRecommendation || showReservation) !== true ? (
         <div className="flex flex-col h-full absolute right-14 justify-center items-center gap-7">
           <div className="flex gap-7">
-            <CircleButton text="추천 차트" handleClick={handleRecommendation} />
-            <CircleButton text="예약 목록" handleClick={handleReservation} />
+            <CircleButton text="추천 차트" handleClick={handleRecommendation} color="bg-pink" />
+            <CircleButton text="예약 목록" handleClick={handleReservation} color="bg-blue" />
           </div>
           <div>
             <GuideQrcode />
@@ -42,14 +42,14 @@ const MainPage = () => {
       {/* 추천 차트 */}
       {showRecommendation && (
         <div className="flex h-full">
-          <ChartTemplates closeChart={handleRecommendation} />
+          <ChartTemplates chartName="SongPicker 추천 차트" closeChart={handleRecommendation} />
         </div>
       )}
 
       {/* 예약 목록 */}
       {showReservation && (
         <div className="flex h-full">
-          <ChartTemplates closeChart={handleReservation} />
+          <ChartTemplates chartName="SongPicker 예약 목록" closeChart={handleReservation} />
         </div>
       )}
     </div>
