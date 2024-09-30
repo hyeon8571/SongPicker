@@ -32,7 +32,7 @@ const LandingPage = () => {
         
         {/* 시작하기 버튼 */}
         <div className="flex justify-center">
-          <Button text="시작하기" handleClick={startKaraoke}/>
+          <Button text="시작하기" handleClick={startKaraoke} color='bg-gradient-to-r from-purple to-[#991571]'/>
         </div>
       </div>
     </div>
