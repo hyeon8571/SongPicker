@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum KaraokeExceptionConstants implements ExceptionConstants {
-    NOT_FOUND_MACHINE("KA000", "기기 조회 실패", HttpStatus.BAD_REQUEST);
+    NOT_FOUND_MACHINE("KA000", "기기 조회 실패", HttpStatus.BAD_REQUEST),
+    CANNOT_NOT_START_SONG("KA001", "노래 시작 실패", HttpStatus.BAD_REQUEST);
 
     final String code;
     final String message;

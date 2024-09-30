@@ -17,13 +17,13 @@ const PayingButton = (props: PayingButtonProps) => {
       <div className="relative flex w-full h-full justify-around items-center">
         <div
           className={`flex w-36 h-28 justify-center items-center text-white rounded-[10px]`}
-          style={{background:props.categoryColor}}
+          style={{background:'#FF24BD'}}
         >
-          <Text48 text={props.categoryText} />
+          <Text48 text='곡 수' />
         </div>
         <div className="flex w-80 gap-x-8 items-center text-white group-hover:text-black">
           <div className="flex">
-            <Text48 text={props.amountText} />
+            <Text48 text={`${props.amount}곡`} />
           </div>
           <div className="flex">
             <Text48 text={props.moneyText} />

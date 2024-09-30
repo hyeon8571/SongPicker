@@ -11,5 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChargeDto {
     private String serialNumber;
-    private int remaining;
+    private int coin;
 }

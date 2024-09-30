@@ -5,7 +5,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -13,19 +12,7 @@ public class RedisService {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public void setData(String key, Object value, Long expiredTime) {
-        redisTemplate.opsForValue().set(key, value, expiredTime, TimeUnit.MILLISECONDS);
-    }
-
-    public void setData(String key, Object value) {
-        redisTemplate.opsForValue().set(key, value);
-    }
-
-    public Object getData(String key) {
-        return redisTemplate.opsForValue().get(key);
-    }
-
-    public List<Object> getList(String key) {
+    public List<Object> getListData(String key) {
         return redisTemplate.opsForList().range(key, 0, -1);
     }
 

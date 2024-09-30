@@ -1,7 +1,7 @@
 package com.fastarm.back.karaoke.dto;
 
 
-import com.fastarm.back.karaoke.enums.Type;
+import com.fastarm.back.connection.enums.Mode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +16,6 @@ public class SaveReservationDto {
     private String title;
     private String singer;
     private String nickname;
-    private Long groupId;
-    private Type type;
+    private Long teamId;
+    private Mode mode;
 }

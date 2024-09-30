@@ -6,10 +6,14 @@ import LandingCharacter from '../assets/LandingCharacter.svg';
 
 import { useState } from 'react';
 import Text60 from '../atoms/Text60';
+import MiniChartTemplate from '../templates/MiniChartTemplate';
+import MiniCircleButton from '../molecules/MiniCircleButton';
 
 const KaraokeVideoPage = () => {
   const state = useLocation();
   const [isVisible, setIsVisible] = useState(true);
+  const [showMiniRecommendation, setShowMiniRecommendation] = useState(false);
+  const [showMiniReservation, setShowMiniReservation] = useState(false);
 
   // 비디오 검색 안될 때
   const handleError = (error: number) => {
@@ -18,6 +22,21 @@ const KaraokeVideoPage = () => {
     }
   };
 
+  // 추천 차트 오픈
+  const handleMiniRecommendation = () => {
+    setShowMiniRecommendation(!showMiniRecommendation);
+    if(showMiniReservation) {
+      setShowMiniReservation(false)
+    }
+  };
+
+  // 예약 차트 오픈
+  const handleMiniReservation = () => {
+    setShowMiniReservation(!showMiniReservation);
+    if(showMiniRecommendation) {
+      setShowMiniRecommendation(false)
+    }
+  };
 
   return (
     <div className="relative flex w-full h-full">
@@ -27,14 +46,10 @@ const KaraokeVideoPage = () => {
 
       {/* 비디오 */}
       <div className="flex flex-col w-full h-full justify-center items-center gap-3">
-        {/* 상단 버튼 */}
-        <div className="flex relative gap-8">
-
-          {/* 추천 차트 버튼 */}
-
-
-          {/* 예약 목록 버튼 */}
-
+        {/* 추천 차트 & 예약 목록 보기 버튼 */}
+        <div className="flex flex-col absolute right-10 bottom-10 gap-7">
+          <MiniCircleButton text="추천 차트" handleClick={handleMiniRecommendation} color='bg-pink'/>
+          <MiniCircleButton text="예약 목록" handleClick={handleMiniReservation} color='bg-blue'/>
         </div>
 
         <div className="flex gap-5"></div>
@@ -47,14 +62,25 @@ const KaraokeVideoPage = () => {
                 src={Novideo}
                 className="w-96 motion-safe:animate-bounce"
                 style={{ animationDuration: '2.5s' }}
-              />
+                />
               <Text60 text="노래가 나오는 중입니다💃" />
             </div>
           </div>
         )}
       </div>
 
-      {/* 미니 차트 */}
+        {/* 미니 차트 */}
+        {
+          showMiniRecommendation && <div className='absolute flex w-full h-full pointer-events-none'>
+            <MiniChartTemplate chartName='SongPicker 추천 차트' closeChart={handleMiniRecommendation}/>
+          </div>
+        }
+        {
+          showMiniReservation && <div className='absolute flex w-full h-full pointer-events-none'>
+            <MiniChartTemplate chartName='SongPicker 예약 목록' closeChart={handleMiniRecommendation}/>
+          </div>
+        }
+
     </div>
   );
 };
