@@ -18,6 +18,8 @@ const MainPage = () => {
     setShowReservation(!showReservation);
   };
 
+  
+
   return (
     <div
       className="relative w-full h-full bg-cover bg-center mb-11"
