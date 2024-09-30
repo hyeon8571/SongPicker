@@ -4,15 +4,6 @@ import Qrcode from '../atoms/Qrcode';
 const GuideQrcode = () => {
   return (
     <div className="flex flex-col gap-y-7">
-      {/* <div className="flex justify-center gap-x-5">
-        제목
-        <div className="flex text-pink">
-          <Text72 text="SSAFY" />
-        </div>
-        <div className="flex text-white">
-          <Text72 text="노래방" />
-        </div>
-      </div> */}
 
       {/* 안내문구 */}
       <div className="relative flex w-[670px] h-[600px] rounded-[10px] bg-white/60 justify-center">
