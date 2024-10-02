@@ -1,8 +1,8 @@
 import ChartItem from '../molecules/ChartItem';
-import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Reservation } from '../shared/Types';
+import findYoutube from '../utils/findYoutube';
 
 type ChartNotCarouselProps = {
   data: Reservation;
@@ -10,30 +10,8 @@ type ChartNotCarouselProps = {
 
 const ChartNotCarousel = (props: ChartNotCarouselProps) => {
   const navigate = useNavigate();
-
   const [clickedTitle, setClickedTitle] = useState('');
   const [clickedArtist, setClickedArtist] = useState('');
-
-  // 유튜브 검색
-  const findYoutube = (title: string, artist: string) => {
-    axios({
-      method: 'GET',
-      url: 'https://www.googleapis.com/youtube/v3/search',
-      params: {
-        key: import.meta.env.VITE_YOUTUBE_API_KEY,
-        q: `${title} ${artist} Ky Karaoke`,
-        maxResults: 1,
-        publishedBefore: '2024-09-24T00:00:00Z',
-        publishedAfter: '2021-01-01T00:00:00Z',
-      },
-    })
-      .then(res => {
-        navigate('/video', { state: res.data.items[0] });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
 
   // 클릭한 노래 상태 변경
   const handleClickedSong = useCallback((title: string, artist: string) => {
@@ -44,10 +22,10 @@ const ChartNotCarousel = (props: ChartNotCarouselProps) => {
   // 클릭한 노래가 변경되면 유튜브 검색을 실행
   useEffect(() => {
     if (clickedTitle && clickedArtist) {
-      findYoutube(clickedTitle, clickedArtist);
+      findYoutube(clickedTitle, clickedArtist, navigate);
     }
   }, [clickedTitle, clickedArtist]);
-  console.log(props.data);
+
   return (
     <div className="relative w-full">
       <div className="flex flex-col w-full items-center gap-2">

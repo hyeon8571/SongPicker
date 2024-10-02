@@ -1,5 +1,5 @@
 import ChartName from '../molecules/ChartName';
-import ChartCarousel from '../organisms/ChartCarousel';
+// import ChartCarousel from '../organisms/ChartCarousel';
 import ChartNotCarousel from '../organisms/ChartNotCarousel';
 import { ChartTemplateProps } from '../shared/Types';
 
@@ -14,7 +14,6 @@ const MiniChartTemplate = (props: ChartTemplateProps) => {
         <div className="absolute top-3 left-5">
           <ChartName text={props.chartName} />
         </div>
-
       </div>
     </div>
   );

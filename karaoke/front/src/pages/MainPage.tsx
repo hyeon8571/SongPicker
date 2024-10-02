@@ -10,7 +10,6 @@ const MainPage = () => {
   const [showReservation, setShowReservation] = useState(false);
   const { data: reservationData, isLoading: reservationIsLoading } = useFetchReservation();
 
-
   // 추천 차트 오픈
   const handleRecommendation = () => {
     setShowRecommendation(!showRecommendation);
@@ -22,7 +21,7 @@ const MainPage = () => {
   };
 
   if (reservationIsLoading) {
-    return <div>로딩로딩로딩</div>
+    return <div>로딩로딩로딩</div>;
   }
 
   // console.log('예약ㄱㄱ', reservationData)
