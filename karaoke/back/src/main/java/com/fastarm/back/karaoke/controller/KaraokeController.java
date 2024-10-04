@@ -42,4 +42,10 @@ public class KaraokeController {
         return ResponseEntity.ok(new ApiResponse<>("KA104", "연결 인원 조회 성공", result));
     }
 
+    @GetMapping("/my/recommendations")
+    public ResponseEntity<?> recommendationList(@RequestParam("loginId") String loginId) {
+        karaokeService.findRecommendations(loginId);
+        return ResponseEntity.ok(new ApiResponse<>("KA102", "추천 차트 조회 성공", result));
+    }
+
 }
