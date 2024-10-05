@@ -145,4 +145,14 @@ public class KaraokeService {
         return result;
     }
 
+    @Transactional
+    public void findIndividualRecommendations(String loginId) {
+
+    }
+
+    @Transactional
+    public void findTeamRecommendations(Long teamId) {
+
+    }
+
 }
