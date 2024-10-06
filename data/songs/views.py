@@ -45,13 +45,13 @@ def individual_recommend_songs_api(request):
     # recommended_songs_list = recommended_songs.to_dict('records')
 
     recommended_songs_list = [
-        {'number': 1, 'title': 'Song Title 1', 'singer': 'Singer 1', 'similarity_score': 0.95},
-        {'number': 2, 'title': 'Song Title 2', 'singer': 'Singer 2', 'similarity_score': 0.90},
-        {'number': 3, 'title': 'Song Title 3', 'singer': 'Singer 3', 'similarity_score': 0.85},
-        {'number': 4, 'title': 'Song Title 4', 'singer': 'Singer 4', 'similarity_score': 0.80},
-        {'number': 5, 'title': 'Song Title 5', 'singer': 'Singer 5', 'similarity_score': 0.75},
+        {'songId': 1, 'number': 1, 'title': 'Song Title 1', 'singer': 'Singer 1', 'coverImage': 'cover1.jpg', 'isLike': False, 'likeId': None},
+        {'songId': 2, 'number': 2, 'title': 'Song Title 2', 'singer': 'Singer 2', 'coverImage': 'cover2.jpg', 'isLike': False, 'likeId': None},
+        {'songId': 3, 'number': 3, 'title': 'Song Title 3', 'singer': 'Singer 3', 'coverImage': 'cover3.jpg', 'isLike': False, 'likeId': None},
+        {'songId': 4, 'number': 4, 'title': 'Song Title 4', 'singer': 'Singer 4', 'coverImage': 'cover4.jpg', 'isLike': False, 'likeId': None},
+        {'songId': 5, 'number': 5, 'title': 'Song Title 5', 'singer': 'Singer 5', 'coverImage': 'cover5.jpg', 'isLike': False, 'likeId': None},
     ]
-    return Response(sing_history_list)
+    return Response(recommended_songs_list)
 
 
 def preprocess_data():
