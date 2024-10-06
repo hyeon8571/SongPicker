@@ -3,6 +3,7 @@ package com.fastarm.back.connection.service;
 import com.fastarm.back.common.constants.RedisConstants;
 import com.fastarm.back.common.constants.RedisExpiredTimeConstants;
 import com.fastarm.back.common.service.RedisService;
+import com.fastarm.back.connection.controller.dto.ConnectionStatusGetResponse;
 import com.fastarm.back.connection.entity.ConnectionInfo;
 import com.fastarm.back.connection.enums.Mode;
 import com.fastarm.back.connection.exception.AlreadyExistConnectionException;
@@ -60,7 +61,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             throw new AlreadyExistConnectionException();
         }
 
-        ConnectionInfo connectionInfo = ConnectionInfo.individualConnectionInfoBuilder()
+        ConnectionInfo connectionInfo = ConnectionInfo.builder()
                 .machine(machine)
                 .member(member)
                 .mode(Mode.INDIVIDUAL)
@@ -93,23 +94,35 @@ public class ConnectionServiceImpl implements ConnectionService {
                 throw new AlreadyExistConnectionException();
             }
 
-            ConnectionInfo connectionInfo = ConnectionInfo.teamConnectionInfoBuilder()
+            ConnectionInfo connectionInfo = ConnectionInfo.builder()
                     .machine(machine)
                     .member(teamMember.getMember())
-                    .team(teamMember.getTeam())
                     .mode(Mode.TEAM)
+                    .team(teamMember.getTeam())
                     .build();
+
             connectionInfoRepository.save(connectionInfo);
         }
     }
 
     @Transactional(readOnly = true)
     @Override
-    public boolean getConnectionStatus(String loginId) {
+    public ConnectionStatusGetResponse getConnectionStatus(String loginId) {
         Member member = memberRepository.findByLoginId(loginId)
                 .orElseThrow(MemberNotFoundException::new);
 
-        return connectionInfoRepository.findByMember(member).isPresent();
+        if (connectionInfoRepository.findByMember(member).isEmpty()) {
+            return ConnectionStatusGetResponse.builder()
+                    .isConnected(false)
+                    .build();
+        } else {
+            ConnectionInfo connectionInfo = connectionInfoRepository.findByMember(member).get();
+            ConnectionStatusGetResponse result = ConnectionStatusGetResponse.from(connectionInfo);
+            if (connectionInfo.getMode() == Mode.TEAM) {
+                result.setTeamName(connectionInfo.getTeam().getName());
+            }
+            return result;
+        }
     }
 
     @Transactional

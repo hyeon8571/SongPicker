@@ -34,6 +34,17 @@ const onRefreshed = (token: string) => {
   refreshSubscribers = [];
 };
 
+const clearAuthState = () => {
+  useAuthStore.setState({
+    isAuthenticated: false,
+    accessToken: null,
+    loginId: null,
+    role: null,
+    isSongSelected: false,
+  });
+  localStorage.removeItem('auth-storage');
+};
+
 const refreshAccessToken = async (): Promise<string> => {
   try {
     const response = await axios.post<ApiResponse>(
@@ -58,7 +69,7 @@ const refreshAccessToken = async (): Promise<string> => {
         return formattedToken;
       }
     }
-    throw new Error('Failed to refresh token');
+    throw new Error('Failed to refresh token ');
   } catch (error) {
     useAuthStore.getState().setAccessToken('');
     throw error;
@@ -97,9 +108,8 @@ axiosInstance.interceptors.response.use(
         }
       } else if (response.data.code === 'AU007') {
         // 리프레시 토큰 만료 처리
-        localStorage.removeItem('auth-storage');
-        useAuthStore.getState().setAccessToken('');
-        useAuthStore.getState().setSongSelected(false);
+        clearAuthState();
+        window.location.href = '/login';
         return Promise.reject(new Error('Refresh token expired'));
       }
     }

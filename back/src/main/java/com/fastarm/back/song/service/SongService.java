@@ -2,10 +2,8 @@ package com.fastarm.back.song.service;
 
 import com.fastarm.back.member.entity.Member;
 import com.fastarm.back.member.repository.MemberRepository;
-import com.fastarm.back.song.controller.dto.SongDetailRequest;
-import com.fastarm.back.song.controller.dto.SongSearchRequest;
-import com.fastarm.back.song.controller.dto.SongSearchResponse;
-import com.fastarm.back.song.controller.dto.TeamSongsRecommendRequest;
+import com.fastarm.back.song.constants.SongConstants;
+import com.fastarm.back.song.controller.dto.*;
 import com.fastarm.back.song.dto.SongDetailDto;
 import com.fastarm.back.song.dto.SongDto;
 import com.fastarm.back.song.entity.Song;
@@ -13,11 +11,13 @@ import com.fastarm.back.song.exception.NotFoundSongDetailException;
 import com.fastarm.back.song.repository.SongRepository;
 import com.fastarm.back.member.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -27,17 +27,20 @@ public class SongService {
     private final SongRepository songRepository;
     private final MemberRepository memberRepository;
     private final RestTemplate restTemplate;
-    private static final String DJANGO_API_URL = "http://django-server/recommendations";
+
 
 
     @Transactional
-    public List<SongDto> recommendMySong(String loginId){
+    public List<SongDto> recommendMySong(String loginId) {
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(MemberNotFoundException::new);
+        String url = SongConstants.PYTHON_SERVER_URL_INDIVIDUAL + "?memberId=" + member.getId();
 
-        Member member = memberRepository.findByLoginId(loginId)
-                .orElseThrow(MemberNotFoundException::new);
+        ResponseEntity<List<SongRecommendResponse>> response = restTemplate.exchange(url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<SongRecommendResponse>>() {});
 
-        List<Song> randomSongs = songRepository.findRandomSongs();
-        List<Long> songIds = randomSongs.stream().map(Song::getId).collect(Collectors.toList());
+        List<Long> songIds = response.getBody().stream()
+                .map(SongRecommendResponse::getSongId)
+                .collect(Collectors.toList());
 
         List<SongDto> songDtoList = songRepository.findSongsWithLikeStatus(songIds, member.getId());
 
@@ -48,43 +51,21 @@ public class SongService {
     @Transactional
     public List<SongDto> recommendTeamSong(TeamSongsRecommendRequest dto){
 
-        Member member = memberRepository.findByLoginId(dto.getLoginId())
-                .orElseThrow(MemberNotFoundException::new);
+        Member member = memberRepository.findByLoginId(dto.getLoginId()).orElseThrow(MemberNotFoundException::new);
+        String url = SongConstants.PYTHON_SERVER_URL_TEAM + "?teamId=" + dto.getTeamId();
 
-        List<Song> randomSongs = songRepository.findRandomSongs();
-        List<Long> songIds = randomSongs.stream().map(Song::getId).collect(Collectors.toList());
+        ResponseEntity<List<SongRecommendResponse>> response = restTemplate.exchange(url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<SongRecommendResponse>>() {});
+
+        List<Long> songIds = response.getBody().stream()
+                .map(SongRecommendResponse::getSongId)
+                .collect(Collectors.toList());
 
         List<SongDto> songDtoList = songRepository.findSongsWithLikeStatus(songIds, member.getId());
 
         return songDtoList;
 
     }
-
-//    @Transactional
-//    public List<SongRecommendDto> recommendMySong(String loginId){
-//        Member member = memberRepository.findByLoginId(loginId)
-//                .orElseThrow(MemberNotFoundException::new);
-//
-//        //장고 통신 로직
-//        SongRecommendRequest request = new SongRecommendRequest(member.getId());
-//        SongRecommendDto[] songRecommendResponseList =restTemplate.postForObject(DJANGO_API_URL, request, SongRecommendDto[].class);
-//        // to-do : 좋아요 추가
-//        return Arrays.asList(songRecommendResponseList);
-//
-//    }
-//
-//    @Transactional
-//    public List<SongRecommendDto> recommendTeamSong(Long teamId){
-//
-//        //장고 통신 로직
-//        SongRecommendRequest request = new SongRecommendRequest(teamId);
-//        SongRecommendDto[] songRecommendResponseList =restTemplate.postForObject(DJANGO_API_URL, request, SongRecommendDto[].class);
-//        // to-do : 좋아요 추가
-//        return Arrays.asList(songRecommendResponseList);
-//
-//    }
-
-
 
     @Transactional(readOnly = true)
     public SongDetailDto getSongDetails(SongDetailRequest dto) {
