@@ -2,6 +2,7 @@ package com.fastarm.back.karaoke.controller;
 
 import com.fastarm.back.common.controller.dto.ApiResponse;
 import com.fastarm.back.karaoke.controller.dto.ConnectionFindResponse;
+import com.fastarm.back.karaoke.controller.dto.RecommendationResponse;
 import com.fastarm.back.karaoke.dto.ChargeDto;
 import com.fastarm.back.karaoke.dto.SongStartDto;
 import com.fastarm.back.karaoke.service.KaraokeService;
@@ -43,14 +44,14 @@ public class KaraokeController {
     }
 
     @GetMapping("/individual/recommendations")
-    public ResponseEntity<?> individualRecommendationList(@RequestParam("loginId") String loginId) {
-        karaokeService.findIndividualRecommendations(loginId);
+    public ResponseEntity<?> individualRecommendationList(@RequestParam(value = "loginId") String loginId) {
+        List<RecommendationResponse> result = karaokeService.findIndividualRecommendations(loginId);
         return ResponseEntity.ok(new ApiResponse<>("KA102", "추천 차트 조회 성공", result));
     }
 
     @GetMapping("/team/recommendations")
     public ResponseEntity<?> teamRecommendationList(@RequestParam("teamId") Long teamId) {
-        karaokeService.findTeamRecommendations(teamId);
+        List<RecommendationResponse> result = karaokeService.findTeamRecommendations(teamId);
         return ResponseEntity.ok(new ApiResponse<>("KA102", "추천 차트 조회 성공", result));
     }
 

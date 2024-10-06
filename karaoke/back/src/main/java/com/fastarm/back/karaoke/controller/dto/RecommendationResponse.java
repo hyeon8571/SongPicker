@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IndividualRecommendationResponse {
-
+public class RecommendationResponse {
+    private int number;
+    private String title;
+    private String singer;
 }
