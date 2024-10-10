@@ -6,7 +6,7 @@ import LandingCharacter from '../assets/LandingCharacter.svg';
 
 import { useState } from 'react';
 import Text60 from '../atoms/Text60';
-import MiniChartTemplate from '../templates/MiniChartTemplate';
+import MiniChartTemplate from '../template/MiniChartTemplate';
 import MiniCircleButton from '../molecules/MiniCircleButton';
 import { useFetchReservation } from '../hooks/useFetchReservation';
 
