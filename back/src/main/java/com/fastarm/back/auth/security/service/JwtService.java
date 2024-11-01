@@ -61,7 +61,7 @@ public class JwtService {
 
         RefreshToken newRefreshToken = RefreshToken.builder()
                 .loginId(loginId)
-                .refreshToken(refreshToken)
+                .refreshToken(newRefresh)
                 .build();
 
         saveRefreshToken(newRefreshToken);
